@@ -79,7 +79,7 @@ func _input(event):
 		drop_fruit_at(event.position.x)
 
 func update_drop_preview(x_position: float):
-	var fruit_radius = FRUIT_SIZES[next_fruit_type] / 2.0
+	var fruit_radius: float = float(FRUIT_SIZES[next_fruit_type]) / 2.0
 	var clamped_x = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
 	var local_x = clamped_x - global_position.x
 	drop_preview_line.set_point_position(0, Vector2(local_x, 0))
@@ -89,7 +89,7 @@ func drop_fruit_at(x_position: float):
 	if not can_drop:
 		return
 
-	var fruit_radius = FRUIT_SIZES[next_fruit_type] / 2.0
+	var fruit_radius: float = float(FRUIT_SIZES[next_fruit_type]) / 2.0
 	var clamped_x = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
 	var fruit = create_fruit(next_fruit_type)
 	fruit.global_position = Vector2(clamped_x, global_position.y)
