@@ -9,12 +9,18 @@ var is_game_active: bool = true
 var score_manager: Node
 var audio_manager: Node
 var game_over_checking: bool = false
+var combo_count: int = 0
+var combo_timer: float = 0.0
+var combo_timeout: float = 2.0
 
 @onready var score_label: Label = $UI/ScorePanel/VBoxContainer/CurrentScore
 @onready var best_score_label: Label = $UI/ScorePanel/VBoxContainer/BestScore
 @onready var game_over_dialog: AcceptDialog = $UI/GameOverDialog
 @onready var fruit_spawner: Node2D = $GameArea/FruitSpawner
 @onready var fruits_container: Node2D = $GameArea/Fruits
+@onready var game_over_line: ColorRect = $GameArea/GameOverLine
+
+var combo_label: Label
 
 func _ready():
 	# ScoreManager 생성 및 설정
@@ -31,6 +37,16 @@ func _ready():
 func setup_game():
 	is_game_active = true
 	update_score_display()
+	setup_combo_label()
+
+func setup_combo_label():
+	combo_label = Label.new()
+	combo_label.text = "COMBO"
+	combo_label.position = Vector2(250, 100)
+	combo_label.add_theme_font_size_override("font_size", 32)
+	combo_label.modulate = Color.GOLD
+	combo_label.visible = false
+	add_child(combo_label)
 
 func connect_signals():
 	game_over_dialog.confirmed.connect(_on_restart_confirmed)
@@ -41,11 +57,57 @@ func connect_signals():
 	score_manager.score_changed.connect(_on_score_changed)
 	score_manager.best_score_updated.connect(_on_best_score_updated)
 
+func _process(delta):
+	if combo_timer > 0:
+		combo_timer -= delta
+		if combo_timer <= 0:
+			reset_combo()
+
+	# 게임오버 라인 색상 업데이트
+	update_game_over_line_color()
+
 func add_score(points: int):
 	if not is_game_active:
 		return
 
-	score_manager.add_score(points)
+	# 콤보 보너스 적용
+	var final_points = points
+	if combo_count > 1:
+		final_points = int(points * (1.0 + (combo_count - 1) * 0.2))  # 20% 보너스씩 추가
+
+	score_manager.add_score(final_points)
+
+	# 콤보 카운트 증가
+	combo_count += 1
+	combo_timer = combo_timeout
+	update_combo_display()
+
+func reset_combo():
+	combo_count = 0
+	update_combo_display()
+
+func update_combo_display():
+	if combo_count > 1:
+		combo_label.text = "COMBO x" + str(combo_count)
+		combo_label.visible = true
+	else:
+		combo_label.visible = false
+
+func update_game_over_line_color():
+	if not is_game_active or not game_over_line:
+		return
+
+	var danger_detected = false
+	for fruit in fruits_container.get_children():
+		if fruit and is_instance_valid(fruit):
+			if fruit.global_position.y <= game_over_line_y + 50:
+				danger_detected = true
+				break
+
+	if danger_detected:
+		game_over_line.color = Color.RED
+	else:
+		game_over_line.color = Color(1, 0.2, 0.2, 0.8)
 
 func update_score_display():
 	score_label.text = str(score_manager.get_current_score())
@@ -112,6 +174,7 @@ func restart_game():
 	score_manager.reset_score()
 	is_game_active = true
 	game_over_checking = false
+	reset_combo()
 	update_score_display()
 	emit_signal("game_started")
 

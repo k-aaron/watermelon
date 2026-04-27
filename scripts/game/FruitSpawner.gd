@@ -89,7 +89,7 @@ func drop_fruit_at(x_position: float):
 	update_fruit_preview()
 
 	can_drop = false
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.3).timeout
 	can_drop = true
 
 func create_fruit(type: int) -> RigidBody2D:
@@ -135,7 +135,19 @@ func create_fruit(type: int) -> RigidBody2D:
 	return fruit
 
 func generate_next_fruit():
-	next_fruit_type = randi() % 5  # 처음 5개 과일 타입만
+	# 점수에 따른 동적 과일 타입 범위
+	var current_score = 0
+	if game_manager and game_manager.score_manager:
+		current_score = game_manager.score_manager.get_current_score()
+
+	var max_fruit_types = 5
+
+	if current_score >= 1000:
+		max_fruit_types = 7  # 점수가 1000 이상이면 더 큰 과일도 생성
+	elif current_score >= 500:
+		max_fruit_types = 6
+
+	next_fruit_type = randi() % max_fruit_types
 
 func update_fruit_preview():
 	fruit_preview.color = FRUIT_COLORS[next_fruit_type]
@@ -195,3 +207,22 @@ func merge_fruits(fruit1: RigidBody2D, fruit2: RigidBody2D):
 
 	# 병합 오디오 효과
 	game_manager.audio_manager.play_sfx(game_manager.audio_manager.SoundType.MERGE)
+
+	# 병합 시각적 효과
+	create_merge_effect(merge_position, new_type)
+
+func create_merge_effect(merge_pos: Vector2, fruit_type: int):
+	# 간단한 텍스트 효과
+	var effect_label = Label.new()
+	effect_label.text = "+" + str(FRUIT_SCORES[fruit_type])
+	effect_label.position = merge_pos - Vector2(20, 30)
+	effect_label.modulate = Color.YELLOW
+	effect_label.add_theme_font_size_override("font_size", 24)
+
+	get_parent().get_parent().add_child(effect_label)
+
+	# 애니메이션 효과
+	var tween = create_tween()
+	tween.parallel().tween_property(effect_label, "position", merge_pos - Vector2(20, 80), 1.0)
+	tween.parallel().tween_property(effect_label, "modulate:a", 0.0, 1.0)
+	tween.tween_callback(effect_label.queue_free)
