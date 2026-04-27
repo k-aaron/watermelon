@@ -93,7 +93,7 @@ func _make_drop_sound() -> AudioStreamWAV:
 	for i in range(n):
 		var t := float(i) / SAMPLE_RATE
 		# 주파수가 내려가는 짧은 타격음
-		var freq := lerp(220.0, 100.0, t / dur)
+		var freq: float = lerpf(220.0, 100.0, t / dur)
 		s[i] = _sine(freq, t) * _envelope(t, dur, 0.002, 0.06) * 0.6
 	return _make_wav(s)
 
@@ -105,7 +105,7 @@ func _make_merge_sound() -> AudioStreamWAV:
 	for i in range(n):
 		var t := float(i) / SAMPLE_RATE
 		# 주파수가 올라가는 상승음 (화음)
-		var freq := lerp(300.0, 600.0, t / dur)
+		var freq: float = lerpf(300.0, 600.0, t / dur)
 		var env := _envelope(t, dur, 0.005, 0.12)
 		s[i] = (_sine(freq, t) * 0.5 + _sine(freq * 1.5, t) * 0.3) * env
 	return _make_wav(s)
