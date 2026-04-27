@@ -49,8 +49,11 @@ func update_score_display():
 	best_score_label.text = str(best_score)
 
 func check_game_over():
+	# 게임오버 체크를 위한 타이머 설정
+	await get_tree().create_timer(2.0).timeout
+
 	for fruit in fruits_container.get_children():
-		if fruit.global_position.y <= game_over_line_y:
+		if fruit.global_position.y <= game_over_line_y and fruit.linear_velocity.length() < 50:
 			trigger_game_over()
 			return
 

@@ -70,6 +70,9 @@ func drop_fruit_at(x_position: float):
 	fruits_container.add_child(fruit)
 	emit_signal("fruit_dropped", fruit)
 
+	# 게임오버 체크 요청
+	game_manager.check_game_over()
+
 	generate_next_fruit()
 	update_fruit_preview()
 
@@ -80,6 +83,11 @@ func drop_fruit_at(x_position: float):
 func create_fruit(type: int) -> RigidBody2D:
 	var fruit = RigidBody2D.new()
 	fruit.name = "Fruit_" + str(type)
+
+	# 물리 속성 설정
+	fruit.mass = 1.0 + (type * 0.2)  # 크기에 따른 질량 차이
+	fruit.gravity_scale = 1.0
+	fruit.linear_damp = 0.1  # 공기 저항
 
 	# 스프라이트 설정
 	var sprite = ColorRect.new()
@@ -96,9 +104,21 @@ func create_fruit(type: int) -> RigidBody2D:
 	collision.shape = shape
 	fruit.add_child(collision)
 
+	# 물리 재질 설정
+	var physics_material = PhysicsMaterial.new()
+	physics_material.bounce = 0.3  # 탄성
+	physics_material.friction = 0.8  # 마찰력
+	fruit.physics_material_override = physics_material
+
 	# 과일 타입 저장
 	fruit.set_meta("fruit_type", type)
 	fruit.set_meta("fruit_size", size)
+	fruit.set_meta("can_merge", true)
+	fruit.set_meta("merge_timer", 0.0)
+
+	# 충돌 감지를 위한 스크립트 연결
+	fruit.set_script(preload("res://scripts/game/Fruit.gd"))
+	fruit.fruit_spawner = self
 
 	return fruit
 
@@ -107,3 +127,48 @@ func generate_next_fruit():
 
 func update_fruit_preview():
 	fruit_preview.color = FRUIT_COLORS[next_fruit_type]
+
+func merge_fruits(fruit1: RigidBody2D, fruit2: RigidBody2D):
+	if not fruit1 or not fruit2:
+		return
+
+	var type1 = fruit1.get_meta("fruit_type", -1)
+	var type2 = fruit2.get_meta("fruit_type", -1)
+
+	# 병합 조건 재확인
+	if type1 != type2 or type1 < 0 or type1 >= FRUIT_COLORS.size() - 1:
+		return
+
+	if not fruit1.get_meta("can_merge", false) or not fruit2.get_meta("can_merge", false):
+		return
+
+	var new_type = type1 + 1
+
+	# 새로운 위치 계산 (두 과일의 중점)
+	var merge_position = (fruit1.global_position + fruit2.global_position) / 2
+
+	# 기존 과일들을 병합 불가능 상태로 설정
+	fruit1.set_meta("can_merge", false)
+	fruit2.set_meta("can_merge", false)
+
+	# 새로운 과일 생성
+	var new_fruit = create_fruit(new_type)
+	new_fruit.global_position = merge_position
+
+	# 기존 과일의 속도를 새 과일에 적용
+	var avg_velocity = (fruit1.linear_velocity + fruit2.linear_velocity) / 2
+	new_fruit.linear_velocity = avg_velocity * 0.5  # 속도 감쇠
+
+	# 컨테이너에 추가
+	fruits_container.add_child(new_fruit)
+
+	# 병합 쿨다운 설정
+	new_fruit.set_merge_cooldown()
+
+	# 점수 추가
+	var score_points = (new_type + 1) * 10
+	game_manager.add_score(score_points)
+
+	# 기존 과일들 제거
+	fruit1.queue_free()
+	fruit2.queue_free()
