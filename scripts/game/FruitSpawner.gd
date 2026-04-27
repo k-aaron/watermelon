@@ -157,7 +157,7 @@ func merge_fruits(fruit1: RigidBody2D, fruit2: RigidBody2D):
 	# 두 과일의 인스턴스 ID로 쌍 키 생성 (순서 무관)
 	var id1 := fruit1.get_instance_id()
 	var id2 := fruit2.get_instance_id()
-	var pair_key := min(id1, id2) * 1000000 + max(id1, id2)
+	var pair_key: int = mini(id1, id2) * 1000000 + maxi(id1, id2)
 	if _merging_pairs.has(pair_key):
 		return
 	_merging_pairs[pair_key] = true
