@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cnqpq35ygxl8p"]
 
-[ext_resource type="Script" path="res://scripts/game/GameManager.gd" id="1_4qx3v"]
+[ext_resource type="Script" path="res://scripts/managers/GameManager.gd" id="1_4qx3v"]
 [ext_resource type="Script" path="res://scripts/game/FruitSpawner.gd" id="2_k8n2m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
