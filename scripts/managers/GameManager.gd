@@ -50,6 +50,7 @@ func connect_signals():
 	$UI/HUDPanel/ButtonSection/RestartButton.pressed.connect(_on_restart_button_pressed)
 	$UI/HUDPanel/ButtonSection/PauseButton.pressed.connect(_on_pause_button_pressed)
 	$UI/HUDPanel/ButtonSection/MuteButton.pressed.connect(_on_mute_button_pressed)
+	$UI/HUDPanel/ButtonSection/EvolutionButton.pressed.connect($EvolutionPanel.toggle)
 	score_manager.score_changed.connect(_on_score_changed)
 	score_manager.best_score_updated.connect(_on_best_score_updated)
 	score_manager.combo_updated.connect(_on_combo_updated)
