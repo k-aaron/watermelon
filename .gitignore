@@ -15,3 +15,9 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# other
+.claude/
+/android/
+harness/
+.DS_Store
