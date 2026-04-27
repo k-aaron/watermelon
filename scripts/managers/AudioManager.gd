@@ -168,7 +168,7 @@ func _make_bgm() -> AudioStreamWAV:
 
 	var total_beats: float = 0.0
 	for note in notes:
-		total_beats += note[1]
+		total_beats += float(note[1])
 	var dur := total_beats * beat
 
 	var n := int(SAMPLE_RATE * dur)
@@ -177,8 +177,8 @@ func _make_bgm() -> AudioStreamWAV:
 
 	var cursor := 0.0
 	for note in notes:
-		var freq: float = note[0]
-		var note_beats: float = note[1]
+		var freq: float = float(note[0])
+		var note_beats: float = float(note[1])
 		var note_dur := note_beats * beat
 		var note_start := int(cursor * SAMPLE_RATE)
 		var note_n := int(note_dur * SAMPLE_RATE)

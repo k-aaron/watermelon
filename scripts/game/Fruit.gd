@@ -31,8 +31,8 @@ func check_merge_with(other_body):
 	if not other_body.has_meta("fruit_type"):
 		return
 
-	var my_type = get_meta("fruit_type", -1)
-	var other_type = other_body.get_meta("fruit_type", -1)
+	var my_type: int = get_meta("fruit_type", -1)
+	var other_type: int = other_body.get_meta("fruit_type", -1)
 
 	# 같은 타입의 과일이고 병합 가능한 경우
 	if my_type == other_type and my_type >= 0 and my_type < 10:  # 수박은 병합 불가

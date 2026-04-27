@@ -162,8 +162,8 @@ func merge_fruits(fruit1: RigidBody2D, fruit2: RigidBody2D):
 		return
 	_merging_pairs[pair_key] = true
 
-	var type1 = fruit1.get_meta("fruit_type", -1)
-	var type2 = fruit2.get_meta("fruit_type", -1)
+	var type1: int = fruit1.get_meta("fruit_type", -1)
+	var type2: int = fruit2.get_meta("fruit_type", -1)
 
 	if type1 != type2 or type1 < 0 or type1 >= FRUIT_COLORS.size() - 1:
 		_merging_pairs.erase(pair_key)
@@ -173,9 +173,9 @@ func merge_fruits(fruit1: RigidBody2D, fruit2: RigidBody2D):
 		_merging_pairs.erase(pair_key)
 		return
 
-	var new_type = type1 + 1
-	var merge_position = (fruit1.global_position + fruit2.global_position) / 2
-	var avg_velocity = (fruit1.linear_velocity + fruit2.linear_velocity) / 2
+	var new_type: int = type1 + 1
+	var merge_position: Vector2 = (fruit1.global_position + fruit2.global_position) / 2.0
+	var avg_velocity: Vector2 = (fruit1.linear_velocity + fruit2.linear_velocity) / 2.0
 
 	fruit1.set_meta("can_merge", false)
 	fruit2.set_meta("can_merge", false)
