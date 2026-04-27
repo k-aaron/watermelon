@@ -60,7 +60,7 @@ func set_sfx_volume(volume: float):
 
 func _make_wav(samples: PackedFloat32Array) -> AudioStreamWAV:
 	var stream = AudioStreamWAV.new()
-	stream.format = AudioStreamWAV.FORMAT_16_BIT
+	stream.format = 1  # FORMAT_16_BIT
 	stream.stereo = false
 	stream.mix_rate = SAMPLE_RATE
 
