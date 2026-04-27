@@ -80,7 +80,7 @@ func _input(event):
 
 func update_drop_preview(x_position: float):
 	var fruit_radius: float = float(FRUIT_SIZES[next_fruit_type]) / 2.0
-	var clamped_x = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
+	var clamped_x: float = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
 	var local_x = clamped_x - global_position.x
 	drop_preview_line.set_point_position(0, Vector2(local_x, 0))
 	drop_preview_line.set_point_position(1, Vector2(local_x, 600))
@@ -90,7 +90,7 @@ func drop_fruit_at(x_position: float):
 		return
 
 	var fruit_radius: float = float(FRUIT_SIZES[next_fruit_type]) / 2.0
-	var clamped_x = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
+	var clamped_x: float = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
 	var fruit = create_fruit(next_fruit_type)
 	fruit.global_position = Vector2(clamped_x, global_position.y)
 
@@ -115,7 +115,7 @@ func create_fruit(type: int) -> RigidBody2D:
 	fruit.linear_damp = 0.1
 	fruit.physics_material_override = _cached_material
 
-	var size = FRUIT_SIZES[type]
+	var size: int = FRUIT_SIZES[type]
 	var sprite = preload("res://scripts/game/FruitSprite.gd").new()
 	sprite.setup(size / 2.0, FRUIT_COLORS[type])
 	fruit.add_child(sprite)

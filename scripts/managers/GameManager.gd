@@ -124,8 +124,8 @@ func trigger_game_over():
 	is_game_active = false
 	audio_manager.play_sfx(audio_manager.SoundType.GAME_OVER)
 	emit_signal("game_over")
-	var final_score = score_manager.get_current_score()
-	var best = score_manager.get_best_score()
+	var final_score: int = score_manager.get_current_score()
+	var best: int = score_manager.get_best_score()
 	game_over_dialog.dialog_text = "최종 점수: %d\n최고 점수: %d" % [final_score, best]
 	game_over_dialog.popup_centered()
 
@@ -147,7 +147,7 @@ func _on_restart_button_pressed():
 
 func _on_pause_button_pressed():
 	get_tree().paused = !get_tree().paused
-	var button = $UI/HUDPanel/ButtonSection/PauseButton
+	var button: Button = $UI/HUDPanel/ButtonSection/PauseButton
 	button.text = "▶ 계속" if get_tree().paused else "⏸ 일시정지"
 
 func _on_mute_button_pressed():

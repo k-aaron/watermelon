@@ -9,7 +9,7 @@ func setup(r: float, c: Color) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var segs := max(24, int(radius * 1.5))
+	var segs: int = maxi(24, int(radius * 1.5))
 
 	# 그림자
 	draw_circle(Vector2(2.5, 4.0), radius, Color(0, 0, 0, 0.18))

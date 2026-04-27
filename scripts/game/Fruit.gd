@@ -23,7 +23,7 @@ func _integrate_forces(state):
 
 	# 충돌하는 모든 바디 검사
 	for i in range(state.get_contact_count()):
-		var contact_body = state.get_contact_collider_object(i)
+		var contact_body: Object = state.get_contact_collider_object(i)
 		if contact_body and contact_body != self:
 			check_merge_with(contact_body)
 
