@@ -15,7 +15,14 @@ script = ExtResource("1_4qx3v")
 [node name="Background" type="ColorRect" parent="."]
 offset_right = 480.0
 offset_bottom = 720.0
-color = Color(0.13, 0.14, 0.2, 1)
+color = Color(0.09, 0.1, 0.16, 1)
+
+[node name="BgAccent" type="ColorRect" parent="."]
+offset_left = 0.0
+offset_top = 100.0
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.11, 0.13, 0.2, 1)
 
 [node name="Container" type="StaticBody2D" parent="."]
 position = Vector2(240, 410)
@@ -25,7 +32,7 @@ offset_left = -190.0
 offset_top = -285.0
 offset_right = 190.0
 offset_bottom = 285.0
-color = Color(0.18, 0.2, 0.3, 1)
+color = Color(0.14, 0.17, 0.26, 1)
 
 [node name="ContainerWalls" type="Node2D" parent="Container"]
 

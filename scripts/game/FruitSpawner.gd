@@ -116,10 +116,8 @@ func create_fruit(type: int) -> RigidBody2D:
 	fruit.physics_material_override = _cached_material
 
 	var size = FRUIT_SIZES[type]
-	var sprite = ColorRect.new()
-	sprite.size = Vector2(size, size)
-	sprite.position = Vector2(-size / 2, -size / 2)
-	sprite.color = FRUIT_COLORS[type]
+	var sprite = preload("res://scripts/game/FruitSprite.gd").new()
+	sprite.setup(size / 2.0, FRUIT_COLORS[type])
 	fruit.add_child(sprite)
 
 	var collision = CollisionShape2D.new()
@@ -191,22 +189,47 @@ func merge_fruits(fruit1: RigidBody2D, fruit2: RigidBody2D):
 	var new_fruit = create_fruit(new_type)
 	new_fruit.global_position = merge_position
 	new_fruit.linear_velocity = avg_velocity * 0.3
+	new_fruit.scale = Vector2.ZERO
 	fruits_container.add_child(new_fruit)
 	new_fruit.set_merge_cooldown()
+
+	# 스케일 팝 애니메이션
+	var pop_tween = new_fruit.create_tween()
+	pop_tween.tween_property(new_fruit, "scale", Vector2(1.25, 1.25), 0.12)\
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	pop_tween.tween_property(new_fruit, "scale", Vector2.ONE, 0.1)\
+		.set_ease(Tween.EASE_IN_OUT)
 
 	game_manager.add_score(FRUIT_SCORES[new_type])
 	game_manager.audio_manager.play_sfx(game_manager.audio_manager.SoundType.MERGE)
 	create_merge_effect(merge_position, new_type)
+	create_merge_flash(merge_position, FRUIT_SIZES[new_type] / 2.0)
 
 func create_merge_effect(merge_pos: Vector2, fruit_type: int):
-	var effect_label = Label.new()
-	effect_label.text = "+" + str(FRUIT_SCORES[fruit_type])
-	effect_label.position = merge_pos - Vector2(20, 30)
-	effect_label.modulate = Color.YELLOW
-	effect_label.add_theme_font_size_override("font_size", 24)
-	get_parent().get_parent().add_child(effect_label)
+	var main := get_parent().get_parent()
+	var label := Label.new()
+	label.text = "+" + str(FRUIT_SCORES[fruit_type])
+	label.position = merge_pos - Vector2(22, 28)
+	label.modulate = Color(1.0, 0.95, 0.2, 1.0)
+	label.add_theme_font_size_override("font_size", 28)
+	main.add_child(label)
 
-	var tween = create_tween()
-	tween.parallel().tween_property(effect_label, "position", merge_pos - Vector2(20, 80), 0.8)
-	tween.parallel().tween_property(effect_label, "modulate:a", 0.0, 0.8)
-	tween.tween_callback(effect_label.queue_free)
+	var tw := create_tween()
+	tw.parallel().tween_property(label, "position", merge_pos - Vector2(22, 90), 0.75)
+	tw.parallel().tween_property(label, "modulate:a", 0.0, 0.75)
+	tw.tween_callback(label.queue_free)
+
+func create_merge_flash(merge_pos: Vector2, radius: float):
+	var main := get_parent().get_parent()
+	# 두 겹의 확장 원형 플래시
+	for i in range(2):
+		var flash := preload("res://scripts/game/FruitSprite.gd").new()
+		flash.setup(radius * (0.8 + i * 0.4), Color(1.0, 1.0, 0.6, 0.7 - i * 0.25))
+		flash.position = merge_pos
+		main.add_child(flash)
+
+		var tw := main.create_tween()
+		tw.parallel().tween_property(flash, "scale", Vector2(2.8, 2.8), 0.35)\
+			.set_ease(Tween.EASE_OUT)
+		tw.parallel().tween_property(flash, "modulate:a", 0.0, 0.35)
+		tw.tween_callback(flash.queue_free)
