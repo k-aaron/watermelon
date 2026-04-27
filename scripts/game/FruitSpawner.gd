@@ -69,7 +69,7 @@ func setup_preview_line():
 	drop_preview_line.add_point(Vector2(0, 600))
 	add_child(drop_preview_line)
 
-func _input(event):
+func _unhandled_input(event):
 	if not can_drop or not game_manager.is_game_active:
 		return
 

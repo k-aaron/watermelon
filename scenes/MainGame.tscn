@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnqpq35ygxl8p"]
+[gd_scene load_steps=6 format=3 uid="uid://cnqpq35ygxl8p"]
 
 [ext_resource type="Script" path="res://scripts/managers/GameManager.gd" id="1_4qx3v"]
 [ext_resource type="Script" path="res://scripts/game/FruitSpawner.gd" id="2_k8n2m"]
+[ext_resource type="Script" path="res://scripts/ui/EvolutionPanel.gd" id="3_evpnl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(20, 580)
@@ -147,29 +148,38 @@ text = "체리"
 theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
-[node name="ButtonSection" type="VBoxContainer" parent="UI/HUDPanel"]
-offset_left = 308.0
-offset_top = 8.0
-offset_right = 472.0
-offset_bottom = 92.0
+[node name="ButtonSection" type="GridContainer" parent="UI/HUDPanel"]
+columns = 2
+offset_left = 300.0
+offset_top = 6.0
+offset_right = 474.0
+offset_bottom = 94.0
 
 [node name="PauseButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
 layout_mode = 2
 text = "⏸ 일시정지"
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 
 [node name="RestartButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
 layout_mode = 2
 text = "↺ 재시작"
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
 
 [node name="MuteButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
 layout_mode = 2
 text = "🔊 음악"
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 11
+
+[node name="EvolutionButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
+layout_mode = 2
+text = "❓ 진화표"
+theme_override_font_sizes/font_size = 11
 
 [node name="GameOverDialog" type="AcceptDialog" parent="UI"]
 initial_position = 2
 size = Vector2i(320, 180)
 title = "게임 오버"
 dialog_text = "게임 오버!"
+
+[node name="EvolutionPanel" type="CanvasLayer" parent="."]
+script = ExtResource("3_evpnl")
