@@ -4,183 +4,165 @@
 [ext_resource type="Script" path="res://scripts/game/FruitSpawner.gd" id="2_k8n2m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(20, 620)
+size = Vector2(20, 580)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
-size = Vector2(440, 20)
+size = Vector2(420, 20)
 
 [node name="MainGame" type="Node2D"]
 script = ExtResource("1_4qx3v")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 720.0
-offset_bottom = 1280.0
-color = Color(0.2, 0.3, 0.4, 1)
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.13, 0.14, 0.2, 1)
 
 [node name="Container" type="StaticBody2D" parent="."]
-position = Vector2(360, 640)
+position = Vector2(240, 410)
 
 [node name="ContainerSprite" type="ColorRect" parent="Container"]
-offset_left = -200.0
-offset_top = -300.0
-offset_right = 200.0
-offset_bottom = 300.0
-color = Color(0.8, 0.9, 1, 1)
+offset_left = -190.0
+offset_top = -285.0
+offset_right = 190.0
+offset_bottom = 285.0
+color = Color(0.18, 0.2, 0.3, 1)
 
 [node name="ContainerWalls" type="Node2D" parent="Container"]
 
 [node name="LeftWall" type="StaticBody2D" parent="Container/ContainerWalls"]
 
 [node name="LeftWallCollision" type="CollisionShape2D" parent="Container/ContainerWalls/LeftWall"]
-position = Vector2(-210, 0)
+position = Vector2(-200, 0)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="LeftWallSprite" type="ColorRect" parent="Container/ContainerWalls/LeftWall"]
-offset_left = -220.0
-offset_top = -310.0
-offset_right = -200.0
-offset_bottom = 310.0
-color = Color(0.4, 0.4, 0.4, 1)
+offset_left = -210.0
+offset_top = -290.0
+offset_right = -190.0
+offset_bottom = 290.0
+color = Color(0.35, 0.4, 0.55, 1)
 
 [node name="RightWall" type="StaticBody2D" parent="Container/ContainerWalls"]
 
 [node name="RightWallCollision" type="CollisionShape2D" parent="Container/ContainerWalls/RightWall"]
-position = Vector2(210, 0)
+position = Vector2(200, 0)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="RightWallSprite" type="ColorRect" parent="Container/ContainerWalls/RightWall"]
-offset_left = 200.0
-offset_top = -310.0
-offset_right = 220.0
-offset_bottom = 310.0
-color = Color(0.4, 0.4, 0.4, 1)
+offset_left = 190.0
+offset_top = -290.0
+offset_right = 210.0
+offset_bottom = 290.0
+color = Color(0.35, 0.4, 0.55, 1)
 
 [node name="BottomWall" type="StaticBody2D" parent="Container/ContainerWalls"]
 
 [node name="BottomWallCollision" type="CollisionShape2D" parent="Container/ContainerWalls/BottomWall"]
-position = Vector2(0, 310)
+position = Vector2(0, 290)
 shape = SubResource("RectangleShape2D_2")
 
 [node name="BottomWallSprite" type="ColorRect" parent="Container/ContainerWalls/BottomWall"]
-offset_left = -220.0
-offset_top = 300.0
-offset_right = 220.0
-offset_bottom = 320.0
-color = Color(0.4, 0.4, 0.4, 1)
+offset_left = -210.0
+offset_top = 285.0
+offset_right = 210.0
+offset_bottom = 305.0
+color = Color(0.35, 0.4, 0.55, 1)
 
 [node name="GameArea" type="Node2D" parent="."]
 
 [node name="FruitSpawner" type="Node2D" parent="GameArea"]
-position = Vector2(360, 200)
+position = Vector2(240, 108)
 script = ExtResource("2_k8n2m")
 
 [node name="Fruits" type="Node2D" parent="GameArea"]
 
 [node name="GameOverLine" type="ColorRect" parent="GameArea"]
-offset_left = 160.0
-offset_top = 330.0
-offset_right = 560.0
-offset_bottom = 335.0
-color = Color(1, 0.2, 0.2, 0.8)
+offset_left = 50.0
+offset_top = 136.0
+offset_right = 430.0
+offset_bottom = 141.0
+color = Color(1, 0.25, 0.25, 0.85)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="ScorePanel" type="Panel" parent="UI"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -120.0
-offset_right = 200.0
-offset_bottom = -20.0
+[node name="HUDPanel" type="Panel" parent="UI"]
+offset_right = 480.0
+offset_bottom = 100.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/ScorePanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
+[node name="ScoreSection" type="VBoxContainer" parent="UI/HUDPanel"]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 175.0
+offset_bottom = 94.0
 
-[node name="ScoreLabel" type="Label" parent="UI/ScorePanel/VBoxContainer"]
+[node name="ScoreLabel" type="Label" parent="UI/HUDPanel/ScoreSection"]
 layout_mode = 2
 text = "점수"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 12
 
-[node name="CurrentScore" type="Label" parent="UI/ScorePanel/VBoxContainer"]
+[node name="CurrentScore" type="Label" parent="UI/HUDPanel/ScoreSection"]
 layout_mode = 2
 text = "0"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 26
 
-[node name="BestLabel" type="Label" parent="UI/ScorePanel/VBoxContainer"]
+[node name="BestLabel" type="Label" parent="UI/HUDPanel/ScoreSection"]
 layout_mode = 2
 text = "최고점수"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
 
-[node name="BestScore" type="Label" parent="UI/ScorePanel/VBoxContainer"]
+[node name="BestScore" type="Label" parent="UI/HUDPanel/ScoreSection"]
 layout_mode = 2
 text = "0"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 15
 
-[node name="NextFruit" type="Panel" parent="UI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -120.0
-offset_top = -120.0
-offset_right = -20.0
-offset_bottom = -20.0
+[node name="NextFruitSection" type="VBoxContainer" parent="UI/HUDPanel"]
+offset_left = 183.0
+offset_top = 6.0
+offset_right = 300.0
+offset_bottom = 94.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/NextFruit"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
-
-[node name="NextLabel" type="Label" parent="UI/NextFruit/VBoxContainer"]
+[node name="NextLabel" type="Label" parent="UI/HUDPanel/NextFruitSection"]
 layout_mode = 2
 text = "다음 과일"
+theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
-[node name="FruitPreview" type="ColorRect" parent="UI/NextFruit/VBoxContainer"]
+[node name="FruitPreview" type="ColorRect" parent="UI/HUDPanel/NextFruitSection"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-custom_minimum_size = Vector2(60, 60)
-color = Color(1, 0.5, 0.5, 1)
+custom_minimum_size = Vector2(44, 44)
+color = Color(1, 0.3, 0.3, 1)
 
-[node name="GameControls" type="HBoxContainer" parent="UI"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -220.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = 80.0
-
-[node name="PauseButton" type="Button" parent="UI/GameControls"]
+[node name="FruitNameLabel" type="Label" parent="UI/HUDPanel/NextFruitSection"]
 layout_mode = 2
-text = "일시정지"
+text = "체리"
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="UI/GameControls"]
+[node name="ButtonSection" type="VBoxContainer" parent="UI/HUDPanel"]
+offset_left = 308.0
+offset_top = 8.0
+offset_right = 472.0
+offset_bottom = 92.0
+
+[node name="PauseButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
 layout_mode = 2
-text = "재시작"
+text = "⏸ 일시정지"
+theme_override_font_sizes/font_size = 13
+
+[node name="RestartButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
+layout_mode = 2
+text = "↺ 재시작"
+theme_override_font_sizes/font_size = 13
+
+[node name="MuteButton" type="Button" parent="UI/HUDPanel/ButtonSection"]
+layout_mode = 2
+text = "🔊 음악"
+theme_override_font_sizes/font_size = 13
 
 [node name="GameOverDialog" type="AcceptDialog" parent="UI"]
 initial_position = 2
-size = Vector2i(300, 150)
-dialog_text = "게임 오버! 다시 시작하시겠습니까?"
-
-[node name="AudioManager" type="Node" parent="."]
-
-[node name="BGMPlayer" type="AudioStreamPlayer" parent="AudioManager"]
-
-[node name="SFXPlayer" type="AudioStreamPlayer" parent="AudioManager"]
+size = Vector2i(320, 180)
+title = "게임 오버"
+dialog_text = "게임 오버!"
