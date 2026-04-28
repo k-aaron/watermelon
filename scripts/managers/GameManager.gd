@@ -3,7 +3,7 @@ extends Node2D
 signal game_over
 signal game_started
 
-@export var game_over_line_y: float = 138.0
+@export var game_over_line_y: float = 75.0
 
 var is_game_active: bool = true
 var score_manager: Node
@@ -17,8 +17,8 @@ const LINE_CHECK_INTERVAL: float = 0.1
 
 var combo_label: Label
 
-@onready var score_label: Label = $UI/HUDPanel/ScoreSection/CurrentScore
-@onready var best_score_label: Label = $UI/HUDPanel/ScoreSection/BestScore
+@onready var score_label: Label = $UI/LeftPanel/ScoreSection/CurrentScore
+@onready var best_score_label: Label = $UI/LeftPanel/ScoreSection/BestScore
 @onready var game_over_dialog: AcceptDialog = $UI/GameOverDialog
 @onready var fruit_spawner: Node2D = $GameArea/FruitSpawner
 @onready var fruits_container: Node2D = $GameArea/Fruits
@@ -39,7 +39,7 @@ func setup_game():
 
 func setup_combo_label():
 	combo_label = Label.new()
-	combo_label.position = Vector2(140, 180)
+	combo_label.position = Vector2(370, 200)
 	combo_label.add_theme_font_size_override("font_size", 28)
 	combo_label.modulate = Color.GOLD
 	combo_label.visible = false
@@ -47,9 +47,8 @@ func setup_combo_label():
 
 func connect_signals():
 	game_over_dialog.confirmed.connect(_on_restart_confirmed)
-	$UI/HUDPanel/ButtonSection/RestartButton.pressed.connect(_on_restart_button_pressed)
-	$UI/HUDPanel/ButtonSection/MuteButton.pressed.connect(_on_mute_button_pressed)
-	$UI/HUDPanel/ButtonSection/EvolutionButton.pressed.connect($EvolutionPanel.toggle)
+	$UI/LeftPanel/ButtonSection/RestartButton.pressed.connect(_on_restart_button_pressed)
+	$UI/LeftPanel/ButtonSection/MuteButton.pressed.connect(_on_mute_button_pressed)
 	score_manager.score_changed.connect(_on_score_changed)
 	score_manager.best_score_updated.connect(_on_best_score_updated)
 	score_manager.combo_updated.connect(_on_combo_updated)
@@ -148,4 +147,4 @@ func _on_restart_button_pressed():
 func _on_mute_button_pressed():
 	_muted = !_muted
 	audio_manager.set_master_volume(0.0 if _muted else 1.0)
-	$UI/HUDPanel/ButtonSection/MuteButton.text = "🔇 음악" if _muted else "🔊 음악"
+	$UI/LeftPanel/ButtonSection/MuteButton.text = "🔇 음악" if _muted else "🔊 음악"

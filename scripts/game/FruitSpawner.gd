@@ -2,9 +2,9 @@ extends Node2D
 
 signal fruit_dropped(fruit)
 
-@export var spawn_height: float = 100.0
-@export var container_left: float = 50.0
-@export var container_right: float = 430.0
+@export var spawn_height: float = 40.0
+@export var container_left: float = 318.0
+@export var container_right: float = 642.0
 
 var next_fruit_type: int = 0
 var can_drop: bool = true
@@ -19,8 +19,8 @@ var _cached_material: PhysicsMaterial
 
 @onready var game_manager: Node2D = get_parent().get_parent()
 @onready var fruits_container: Node2D = get_parent().get_node("Fruits")
-@onready var fruit_preview: ColorRect = $"../../UI/HUDPanel/NextFruitSection/FruitPreview"
-@onready var fruit_name_label: Label = $"../../UI/HUDPanel/NextFruitSection/FruitNameLabel"
+@onready var fruit_preview: ColorRect = $"../../UI/RightTopPanel/NextFruitSection/FruitPreview"
+@onready var fruit_name_label: Label = $"../../UI/RightTopPanel/NextFruitSection/FruitNameLabel"
 
 const FRUIT_NAMES = [
 	"체리", "딸기", "포도", "귤", "감",
@@ -41,7 +41,7 @@ const FRUIT_COLORS = [
 	Color.DARK_GREEN
 ]
 
-const FRUIT_SIZES = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
+const FRUIT_SIZES = [30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130]
 const FRUIT_SCORES = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66]
 
 func _ready():
@@ -66,7 +66,7 @@ func setup_preview_line():
 	drop_preview_line.width = 2.0
 	drop_preview_line.default_color = Color(1, 1, 0, 0.6)
 	drop_preview_line.add_point(Vector2.ZERO)
-	drop_preview_line.add_point(Vector2(0, 600))
+	drop_preview_line.add_point(Vector2(0, 500))
 	add_child(drop_preview_line)
 
 func _unhandled_input(event):
@@ -83,7 +83,7 @@ func update_drop_preview(x_position: float):
 	var clamped_x: float = clamp(x_position, container_left + fruit_radius, container_right - fruit_radius)
 	var local_x = clamped_x - global_position.x
 	drop_preview_line.set_point_position(0, Vector2(local_x, 0))
-	drop_preview_line.set_point_position(1, Vector2(local_x, 600))
+	drop_preview_line.set_point_position(1, Vector2(local_x, 500))
 
 func drop_fruit_at(x_position: float):
 	if not can_drop:
