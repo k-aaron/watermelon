@@ -48,7 +48,6 @@ func setup_combo_label():
 func connect_signals():
 	game_over_dialog.confirmed.connect(_on_restart_confirmed)
 	$UI/HUDPanel/ButtonSection/RestartButton.pressed.connect(_on_restart_button_pressed)
-	$UI/HUDPanel/ButtonSection/PauseButton.pressed.connect(_on_pause_button_pressed)
 	$UI/HUDPanel/ButtonSection/MuteButton.pressed.connect(_on_mute_button_pressed)
 	$UI/HUDPanel/ButtonSection/EvolutionButton.pressed.connect($EvolutionPanel.toggle)
 	score_manager.score_changed.connect(_on_score_changed)
@@ -131,7 +130,6 @@ func trigger_game_over():
 	game_over_dialog.popup_centered()
 
 func restart_game():
-	get_tree().paused = false
 	for fruit in fruits_container.get_children():
 		fruit.queue_free()
 	score_manager.reset_score()
@@ -146,13 +144,6 @@ func _on_restart_confirmed():
 
 func _on_restart_button_pressed():
 	restart_game()
-
-func _on_pause_button_pressed():
-	get_tree().paused = !get_tree().paused
-	var button: Button = $UI/HUDPanel/ButtonSection/PauseButton
-	button.text = "▶ 계속" if get_tree().paused else "⏸ 일시정지"
-	if not get_tree().paused:
-		fruit_spawner.can_drop = true
 
 func _on_mute_button_pressed():
 	_muted = !_muted
