@@ -130,6 +130,7 @@ func trigger_game_over():
 	game_over_dialog.popup_centered()
 
 func restart_game():
+	get_tree().paused = false
 	for fruit in fruits_container.get_children():
 		fruit.queue_free()
 	score_manager.reset_score()
@@ -149,6 +150,8 @@ func _on_pause_button_pressed():
 	get_tree().paused = !get_tree().paused
 	var button: Button = $UI/HUDPanel/ButtonSection/PauseButton
 	button.text = "▶ 계속" if get_tree().paused else "⏸ 일시정지"
+	if not get_tree().paused:
+		fruit_spawner.can_drop = true
 
 func _on_mute_button_pressed():
 	_muted = !_muted

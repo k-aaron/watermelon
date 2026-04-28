@@ -70,7 +70,7 @@ func setup_preview_line():
 	add_child(drop_preview_line)
 
 func _unhandled_input(event):
-	if not can_drop or not game_manager.is_game_active:
+	if get_tree().paused or not can_drop or not game_manager.is_game_active:
 		return
 
 	if event is InputEventMouseMotion:
